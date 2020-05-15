@@ -1,0 +1,91 @@
+# coding: utf-8
+
+from place import Place
+
+# class Place(object):
+#     name = ''
+#     description = ''
+
+#     def __init__(self, name, description):
+#         self.name = name
+#         self.description = description
+
+class Map(object):
+    places = list()
+
+    def __init__(self):
+        self.build_map()
+
+    def build_map(self):
+        self.places.append(Place('荣国府', '起点'))
+        self.places.append(Place('大门', ''))
+        self.places.append(Place('甬路', ''))
+        self.places.append(Place('大厅', ''))
+        self.places.append(Place('贾氏宗祠', ''))
+        self.places.append(Place('二门', ''))
+        self.places.append(Place('贾氏家塾', '宝玉谒师？者罚回本位'))
+        self.places.append(Place('宜门', ''))
+        self.places.append(Place('大堂', '此处不得住退回本位'))
+        self.places.append(Place('正房', ''))
+        self.places.append(Place('贾政', '请安停一轮'))
+        self.places.append(Place('王夫人', '请安停一轮'))
+        self.places.append(Place('金钏', '问好宝玉三倍受罚'))
+        self.places.append(Place('玉钏', '问好宝玉罚回本位'))
+        self.places.append(Place('东厢房', ''))
+        self.places.append(Place('周姨娘', '问好'))
+        self.places.append(Place('西厢房', ''))
+        self.places.append(Place('赵姨娘', '问好宝玉凤姐三倍受罚'))
+        self.places.append(Place('贾环', '问好宝玉凤姐受罚'))
+        self.places.append(Place('上房', ''))
+        self.places.append(Place('贾母', '请安随意呼点应者方行不应者罚'))
+        self.places.append(Place('鸳鸯', '问好凤姐停一轮宝玉问好罚回本位'))
+        self.places.append(Place('琥珀', '问好'))
+        self.places.append(Place('偏院', ''))
+        self.places.append(Place('贾琏', '问好凤姐受罚遇四方行不遇者罚'))
+        self.places.append(Place('平姑娘', '问好凤姐免'))
+        self.places.append(Place('尤二姐', '问好凤姐三倍受罚'))
+        self.places.append(Place('巧姐', '问好凤姐受贺停一轮'))
+        self.places.append(Place('小红', '问好凤姐免'))
+        self.places.append(Place('群房', ''))
+        self.places.append(Place('彩云', '问好宝玉受罚'))
+        self.places.append(Place('彩霞', '问好'))
+        self.places.append(Place('傻大姐', '至此不停？点速行黛玉至此随意呼点不应者罚'))
+        self.places.append(Place('后院', ''))
+        self.places.append(Place('赖大家', '问好'))
+        self.places.append(Place('周瑞家', '问好'))
+        self.places.append(Place('刘姥姥', '？？妙玉受罚'))
+        self.places.append(Place('板儿', '糖钱'))
+        self.places.append(Place('柳二家', '问好'))
+        self.places.append(Place('鲍二家', '凤姐加倍受罚'))
+        self.places.append(Place('后门', ''))
+        self.places.append(Place('宁国府', ''))
+        self.places.append(Place('贾赦', '请安停一轮妙玉香菱请安不停'))
+        self.places.append(Place('邢夫人', '请安停一轮'))
+        self.places.append(Place('贾珍', '请安'))
+        self.places.append(Place('尤氏', '问好'))
+        self.places.append(Place('尤老娘', '请安'))
+        self.places.append(Place('尤三姐', '问好宝玉问好免受罚'))
+        self.places.append(Place('贾蓉', '问好凤姐加倍受罚'))
+        self.places.append(Place('秦可卿', '问好凤姐停一轮宝玉加倍受罚'))
+        self.places.append(Place('梨香院', ''))
+        self.places.append(Place('文官', '赏赐'))
+        self.places.append(Place('龄官', '同'))
+        self.places.append(Place('芳官', '同'))
+        self.places.append(Place('藕官', '同'))
+        self.places.append(Place('蕊官', '同'))
+        self.places.append(Place('药官', '同'))
+        self.places.append(Place('葵官', '同'))
+        self.places.append(Place('艾官', '同'))
+        self.places.append(Place('豆官', '同'))
+        self.places.append(Place('角门', ''))
+        self.places.append(Place('薛姨妈', '请安宝玉香菱停一轮宝钗遇二方行不遇者罚'))
+        self.places.append(Place('薛蟠', '问好妙玉免香菱受贺遇六方行不遇者罚'))
+        self.places.append(Place('夏金桂', '问好香菱请安随意呼点应者方行不应者罚'))
+        self.places.append(Place('宝蟾', '问好香菱三倍受罚黛玉妙玉免问好'))
+        self.places.append(Place('薛蝌', '问好妙玉免'))
+        self.places.append(Place('邢岫烟', '问好'))
+        self.places.append(Place('大观园', '至此举贺'))
+        self.places.append(Place('小终南', '拈香？？等香菱过去？来至此山方难游大荒山自青埂峰？由天台出顺路前行如香菱已过玄后至者罚玉大主山一游城隍庙'))
+        self.places.append(Place('', ''))
+        self.places.append(Place('', ''))
+        self.places.append(Place('', ''))
