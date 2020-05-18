@@ -23,21 +23,20 @@ class Player(object):
     dice_kind = None
     dices = (0, 0, 0)
 
-    stop_places = list()
-    goback_places = list()
-    qingan_places = list()
-    wenhao_places = list()
-    shouhe_places = list()
-    juhe_places = list()
-    fa_places = list()
-    nianxiang_places = list()
-    losemoney_places = list()
-    calldice_places = list()
+    stop_places: list
+    goback_places: list
+    qingan_places: list
+    wenhao_places: list
+    shouhe_places: list
+    juhe_places: list
+    fa_places: list
+    nianxiang_places: list
+    losemoney_places: list
+    calldice_places: list
 
     def __init__(self, name):
         self.name = name
         self.location = '荣国府'
-        self.location_last = '荣国府'
         self.stop_places = place_common_effect.stop_places
         self.goback_places = place_common_effect.goback_places
         self.qingan_places = place_common_effect.qingan_places
@@ -53,6 +52,7 @@ class Player(object):
         '''一轮行动'''
         print(self.name, '正在', self.location, '开始一轮行动')
         if self.is_stop:
+            print(self.name, '这一轮 停')
             self.is_stop = False
             return
         self.get_dices(dices)
@@ -60,9 +60,8 @@ class Player(object):
         self.go_forward(game_map)
         self.place_interact()
 
-    def go_back(self):
-        '''罚回本位'''
-        self.location_last, self.location = self.location, self.location_last
+    def get_dices(self, dices: Dices):
+        self.dice_kind, self.dices = dices.get()
 
     def go_forward(self, game_map: GameMap):
         step = sum(self.dices)
@@ -71,27 +70,42 @@ class Player(object):
         self.location = new_place
         print(self.name, '往前走', step, '步，到达', new_place)
 
+    def place_interact(self):
+        '''
+        六人相同的处置
+        '''
+        if self.location in self.stop_places:
+            self.stop()
+        if self.location in self.goback_places:
+            self.goback()
+        if self.location in self.qingan_places:
+            self.qingan()
+        if self.location in self.wenhao_places:
+            self.wenhao()
+        if self.location in self.shouhe_places:
+            self.shouhe()
+        if self.location in self.juhe_places:
+            self.juhe()
+        if self.location in self.fa_places:
+            self.fa()
+        if self.location in self.nianxiang_places:
+            self.losemoney()
+        if self.location in self.calldice_places:
+            # self.call_dices()
+            pass
+        print(self.name, '走到了', self.location, '\n')
+
+
     def stop(self):
         '''停一轮'''
+        print(self.name, '将要停一轮')
         self.is_stop = True
-    
-    def get_dices(self, dices: Dices):
-        self.dice_kind, self.dices = dices.get()
 
-    def call_dices(self, dices: Dices):
-        '''随意呼点应者方行不应者罚'''
-        call_num = random.randint(1, 6)
-        print(self.name, 'call', call_num)
-        self.get_dices(dices)
-        self.judge_dices(call_num)
-
-    def judge_dices(self, num_target):
-        '''遇某方行不遇者罚'''
-        if num_target in self.dices:
-            # TODO: 遇某方行
-            pass
-        else:
-            self.fa()
+    def goback(self):
+        '''罚回本位'''
+        print(self.name, '被罚回本位')
+        self.location_last, self.location = self.location, self.location_last
+        print(self.name, '从', self.location_last, '回到了', self.location)
 
     def qingan(self):
         self.qingan_count += 1
@@ -114,12 +128,20 @@ class Player(object):
     def losemoney(self):
         self.losemoney_count += 1
 
-    def place_interact(self):
-        '''
-        六人相同的处置
-        '''
-        print(self.name, '走到了', self.location, '\n')
-        # location = self.location
+    def call_dices(self, dices: Dices):
+        '''随意呼点应者方行不应者罚'''
+        call_num = random.randint(1, 6)
+        print(self.name, 'call', call_num)
+        self.get_dices(dices)
+        self.judge_dices(call_num)
+
+    def judge_dices(self, num_target):
+        '''遇某方行不遇者罚'''
+        if num_target in self.dices:
+            # TODO: 遇某方行
+            pass
+        else:
+            self.fa()
 
 
 class BaoYu(Player):
