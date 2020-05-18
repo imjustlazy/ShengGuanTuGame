@@ -1,7 +1,9 @@
 # coding: utf-8
 
 import random
+
 from dice import Dices
+from game_map import GameMap
 import place_common_effect
 
 legal_names = ['宝玉', '宝钗', '黛玉', '凤姐', '妙玉', '香菱']
@@ -47,22 +49,27 @@ class Player(object):
         self.losemoney_places = place_common_effect.losemoney_places
         self.calldice_places  = place_common_effect.calldice_places
 
-    def go(self, dices: Dices):
+    def go(self, dices: Dices, game_map: GameMap):
         '''一轮行动'''
+        print(self.name, '正在', self.location, '开始一轮行动')
         if self.is_stop:
             self.is_stop = False
             return
         self.get_dices(dices)
-        # TODO: add the process of go forward
+        print(self.name, '掷骰子。结果是', self.dices)
+        self.go_forward(game_map)
         self.place_interact()
 
     def go_back(self):
         '''罚回本位'''
         self.location_last, self.location = self.location, self.location_last
 
-    def go_forward(self, new_place: str):
+    def go_forward(self, game_map: GameMap):
+        step = sum(self.dices)
+        new_place = game_map.go_forward(self.location, step)
         self.location_last = self.location
         self.location = new_place
+        print(self.name, '往前走', step, '步，到达', new_place)
 
     def stop(self):
         '''停一轮'''
@@ -111,7 +118,7 @@ class Player(object):
         '''
         六人相同的处置
         '''
-        print(self.name, '正走到', self.location)
+        print(self.name, '走到了', self.location, '\n')
         # location = self.location
 
 
@@ -137,9 +144,8 @@ class BaoYu(Player):
     # losemoney_places: list
     # calldice_places: list
 
-    def __init__(self, name = '宝玉'):
-        super().__init__(name)
-        assert self.name == '宝玉'
+    def __init__(self):
+        super().__init__('宝玉')
         self.stop_places += self._stop_places
         self.goback_places = [p for p in self.goback_places + self._goback_places
                                 if p not in self._not_goback_places]
@@ -159,9 +165,8 @@ class BaoChai(Player):
     _fa_places = ['茫茫大士', '渺渺真人']
     _calldice_places = [('薛姨妈', 2), ('蘅芜苑', 2)]
     
-    def __init__(self, name = '宝钗'):
-        super().__init__(name)
-        assert self.name == '宝钗'
+    def __init__(self):
+        super().__init__('宝钗')
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
         self.fa_places += self._fa_places
@@ -177,13 +182,11 @@ class DaiYu(Player):
     _shouhe_places = ['林如海', '潇湘馆']
     _calldice_places = ['林如海', ('潇湘馆', 3)]
     
-    def __init__(self, name = '黛玉'):
-        super().__init__(name)
-        assert self.name == '黛玉'
+    def __init__(self):
+        super().__init__('黛玉')
         self.stop_places += self._stop_places
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
-        self.fa_places += self._fa_places
         self.calldice_places += self._calldice_places
     
     def place_interact(self):
@@ -198,9 +201,8 @@ class FengJie(Player):
     _fa_places = [('赵姨娘', 3), '贾环', '贾琏', ('秦可卿', 2), ('鲍二家', 2), ('醋缸', 2)]
     _calldice_places = [('怡红院', 1), ('贾琏', 4), ('尤二姐', 3), '醋缸']
 
-    def __init__(self, name = '凤姐'):
-        super().__init__(name)
-        assert self.name == '凤姐'
+    def __init__(self):
+        super().__init__('凤姐')
         self.stop_places += self._stop_places
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
@@ -221,9 +223,8 @@ class MiaoYu(Player):
     _not_losemoney_places = ['女尼']
     _calldice_places = [('栊翠庵', 5)]
     
-    def __init__(self, name = '妙玉'):
-        super().__init__(name)
-        assert self.name == '妙玉'
+    def __init__(self):
+        super().__init__('妙玉')
         self.stop_places = [p for p in self.stop_places + self._stop_places
                             if p not in self._not_stop_places]
         self.qingan_places = [p for p in self.qingan_places if p not in self._not_qingan_places]
@@ -246,9 +247,8 @@ class XiangLing(Player):
     _fa_places = [('宝蟾', 3), ('冯渊', 2)]
     _calldice_places = [('薛蟠', 6), '夏金桂', '甄士隐']
     
-    def __init__(self, name = '香菱'):
-        super().__init__(name)
-        assert self.name == '香菱'
+    def __init__(self):
+        super().__init__('香菱')
         self.stop_places = [p for p in self.stop_places + self._stop_places
                             if p not in self._not_stop_places]
         self.goback_places = [p for p in self.goback_places if p not in self._not_goback_places]

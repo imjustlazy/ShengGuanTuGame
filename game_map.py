@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import pdb
 from place import Place
 
 # class Place(object):
@@ -40,15 +41,17 @@ class GameMap(object):
         descriptions = f.readlines()
         f.close()
         assert descriptions.count('\n') == 2
-        cut_a = descriptions.index('\n')
+        descriptions = [line.rstrip('\n') for line in descriptions]
+        cut_a = descriptions.index('')
         description_a, descriptions = descriptions[:cut_a], descriptions[cut_a+1:]
-        cut_b = descriptions.index('\n')
+        cut_b = descriptions.index('')
         description_b, description_c= descriptions[:cut_b], descriptions[cut_b+1:]
         count_guizu = 0
         for i, name in enumerate(description_c):
             if name == '鬼卒':
                 count_guizu += 1
                 description_c[i] = name + str(count_guizu)
+        # pdb.set_trace()
         assert count_guizu == 5
         assert len(description_a) == 127 and len(description_b) == 14 and len(description_c) == 17
 
@@ -63,4 +66,11 @@ class GameMap(object):
                 sub.pre = pre_name
 
         build_structure_from_place_list(description_a)
-        
+    
+    def go_forward(self, feet: str, step: int):
+        while step > 0:
+            if feet == '红楼梦太虚幻境图':
+                return feet
+            feet = self.places[feet].sub
+            step -= 1
+        return feet
