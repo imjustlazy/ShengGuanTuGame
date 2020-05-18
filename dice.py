@@ -43,8 +43,11 @@ class Dices(object):
             self.kind = -2
         else:
             self.kind = None
-
+    
+    def status(self):
+        return self.kind, (self.dice_a.surface, self.dice_b.surface, self.dice_c.surface)
+    
     def get(self):
         self.roll()
         self.judge_kind()
-        return self.kind, (self.dice_a.surface, self.dice_b.surface, self.dice_c.surface)
+        return self.status()
