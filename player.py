@@ -29,10 +29,10 @@ class Player(object):
     wenhao_places: list
     shouhe_places: list
     juhe_places: list
-    fa_places: list
+    fa_places: dict
     nianxiang_places: list
     losemoney_places: list
-    calldice_places: list
+    calldice_places: dict
 
     def __init__(self, name):
         self.name = name
@@ -43,10 +43,24 @@ class Player(object):
         self.wenhao_places = place_common_effect.wenhao_places
         self.shouhe_places = list()
         self.juhe_places   = place_common_effect.juhe_places
-        self.fa_places     = list()
+        self.fa_places     = dict()
         self.nianxiang_places = place_common_effect.nianxiang_places
         self.losemoney_places = place_common_effect.losemoney_places
         self.calldice_places  = place_common_effect.calldice_places
+
+    def show_status(self):
+        summary = self.name + ' 的总结:\n'
+        summary += self.name + '正在 ' + self.location + '\n'
+        if self.is_stop:
+            summary += '即将停一轮\n'
+        summary += '请安了 ' + str(self.qingan_count) + ' 次\n'
+        summary += '问好了 ' + str(self.wenhao_count) + ' 次\n'
+        summary += '受贺了 ' + str(self.shouhe_count) + ' 次\n'
+        summary += '举贺了 ' + str(self.juhe_count) + ' 次\n'
+        summary += '被罚了 ' + str(self.fa_count) + ' 次\n'
+        summary += '拈香了 ' + str(self.nianxiang_count) + ' 次\n'
+        summary += '捐资了 ' + str(self.losemoney_count) + ' 次\n'
+        print(summary)
 
     def go(self, dices: Dices, game_map: GameMap):
         '''一轮行动'''
@@ -72,7 +86,7 @@ class Player(object):
 
     def place_interact(self):
         '''
-        六人相同的处置
+        人物与地点的交互
         '''
         if self.location in self.stop_places:
             self.stop()
@@ -108,24 +122,45 @@ class Player(object):
         print(self.name, '从', self.location_last, '回到了', self.location)
 
     def qingan(self):
+        '''请安'''
+        print(self.name, '向', self.location, '请安')
         self.qingan_count += 1
 
     def wenhao(self):
+        '''问好'''
+        print(self.name, '向', self.location, '问好')
         self.wenhao_count += 1
 
     def shouhe(self):
+        '''受贺'''
+        print(self.name, '因', self.location, '受贺')
         self.shouhe_count += 1
 
     def juhe(self):
+        '''举贺'''
+        print(self.name, '因', self.location, '举贺')
         self.juhe_count += 1
 
-    def fa(self, bei: int = 1):
+    def fa(self):
+        '''受罚'''
+        bei = self.fa_places[self.location]
+        if bei == 1:
+            fa_str = '受罚'
+        elif bei == 2:
+            fa_str = '加倍受罚'
+        elif bei == 3:
+            fa_str = '三倍受罚'
+        print(self.name, '因', self.location, fa_str)
         self.fa_count += bei
     
     def nianxiang(self):
+        '''拈香'''
+        print(self.name, '在', self.location, '拈香')
         self.nianxiang_count += 1
 
     def losemoney(self):
+        '''糖钱 赏赐 捐资 布施'''
+        print(self.name, '给', self.location, '捐资')
         self.losemoney_count += 1
 
     def call_dices(self, dices: Dices):
@@ -152,19 +187,8 @@ class BaoYu(Player):
     _not_goback_places = ['贾氏家塾', '松鹤童子', '冯渊']
     _not_wenhao_places = ['贾环']
     _shouhe_places = ['女仙', '怡红院']
-    _fa_places = [('金钏', 3), ('赵姨娘', 3), '贾环', '彩云', ('秦可卿', 2)]
-    _calldice_places = [('怡红院', 1)]
-
-    # stop_places: list
-    # goback_places: list
-    # qingan_places: list
-    # wenhao_places: list
-    # shouhe_places: list
-    # juhe_places: list
-    # fa_places: list
-    # nianxiang_places: list
-    # losemoney_places: list
-    # calldice_places: list
+    _fa_places = {'金钏': 3, '赵姨娘': 3, '贾环': 1, '彩云': 1, '秦可卿': 2}
+    _calldice_places = {'怡红院': 1}
 
     def __init__(self):
         super().__init__('宝玉')
@@ -173,26 +197,25 @@ class BaoYu(Player):
                                 if p not in self._not_goback_places]
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
-        self.fa_places += self._fa_places
-        self.calldice_places += self._calldice_places
+        self.fa_places.update(self._fa_places)
+        self.calldice_places.update(self._calldice_places)
 
     def place_interact(self):
         super().place_interact()
-        # location = super().location
 
 
 class BaoChai(Player):
     _not_wenhao_places = ['莺儿']
     _shouhe_places = ['蘅芜苑']
-    _fa_places = ['茫茫大士', '渺渺真人']
-    _calldice_places = [('薛姨妈', 2), ('蘅芜苑', 2)]
+    _fa_places = {'茫茫大士': 1, '渺渺真人': 1}
+    _calldice_places = {'薛姨妈': 2, '蘅芜苑': 2}
     
     def __init__(self):
         super().__init__('宝钗')
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
-        self.fa_places += self._fa_places
-        self.calldice_places += self._calldice_places
+        self.fa_places.update(self._fa_places)
+        self.calldice_places.update(self._calldice_places)
     
     def place_interact(self):
         super().place_interact()
@@ -202,14 +225,14 @@ class DaiYu(Player):
     _stop_places = ['贾夫人']
     _not_wenhao_places = ['宝蟾', '紫鹃', '雪雁']
     _shouhe_places = ['林如海', '潇湘馆']
-    _calldice_places = ['林如海', ('潇湘馆', 3)]
+    _calldice_places = {'林如海': None, '潇湘馆': 3}
     
     def __init__(self):
         super().__init__('黛玉')
         self.stop_places += self._stop_places
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
-        self.calldice_places += self._calldice_places
+        self.calldice_places.update(self._calldice_places)
     
     def place_interact(self):
         super().place_interact()
@@ -220,16 +243,16 @@ class FengJie(Player):
     _wenhao_places = ['內监']
     _not_wenhao_places = ['贾环', '鸳鸯', '平姑娘', '尤二姐', '巧姐', '小红']
     _shouhe_places = ['巧姐', '']
-    _fa_places = [('赵姨娘', 3), '贾环', '贾琏', ('秦可卿', 2), ('鲍二家', 2), ('醋缸', 2)]
-    _calldice_places = [('怡红院', 1), ('贾琏', 4), ('尤二姐', 3), '醋缸']
+    _fa_places = {'赵姨娘': 3, '贾环': 1, '贾琏': 1, '尤二姐': 3, '鲍二家': 2, '醋缸': 2}
+    _calldice_places = {'贾琏': 4, '醋缸': None}
 
     def __init__(self):
         super().__init__('凤姐')
         self.stop_places += self._stop_places
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
-        self.fa_places += self._fa_places
-        self.calldice_places += self._calldice_places
+        self.fa_places.update(self._fa_places)
+        self.calldice_places.update(self._calldice_places)
 
     def place_interact(self):
         super().place_interact()
@@ -241,9 +264,9 @@ class MiaoYu(Player):
     _not_qingan_places = ['贾珠']
     _not_wenhao_places = ['薛蟠', '宝蟾', '薛蝌']
     _shouhe_places = ['栊翠庵']
-    _fa_places = ['刘姥姥']
+    _fa_places = {'刘姥姥': 1}
     _not_losemoney_places = ['女尼']
-    _calldice_places = [('栊翠庵', 5)]
+    _calldice_places = {'栊翠庵': 5}
     
     def __init__(self):
         super().__init__('妙玉')
@@ -252,8 +275,9 @@ class MiaoYu(Player):
         self.qingan_places = [p for p in self.qingan_places if p not in self._not_qingan_places]
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
-        self.fa_places += self._fa_places
-        self.calldice_places += self._calldice_places
+        self.fa_places.update(self._fa_places)
+        self.losemoney_places = [p for p in self.losemoney_places if p not in self._not_losemoney_places]
+        self.calldice_places.update(self._calldice_places)
     
     def place_interact(self):
         super().place_interact()
@@ -266,8 +290,8 @@ class XiangLing(Player):
     _qingan_places = ['夏金桂', '甄士隐']
     _not_qingan_places = ['贾珠']
     _shouhe_places = ['薛蟠']
-    _fa_places = [('宝蟾', 3), ('冯渊', 2)]
-    _calldice_places = [('薛蟠', 6), '夏金桂', '甄士隐']
+    _fa_places = {'宝蟾': 3, '冯渊': 2}
+    _calldice_places = {'薛蟠': 6, '夏金桂': None, '甄士隐': None}
     
     def __init__(self):
         super().__init__('香菱')
@@ -277,8 +301,8 @@ class XiangLing(Player):
         self.qingan_places = [p for p in self.qingan_places + self._qingan_places
                             if p not in self._not_qingan_places]
         self.shouhe_places += self._shouhe_places
-        self.fa_places += self._fa_places
-        self.calldice_places += self._calldice_places
+        self.fa_places.update(self._fa_places)
+        self.calldice_places.update(self._calldice_places)
     
     def place_interact(self):
         super().place_interact()
