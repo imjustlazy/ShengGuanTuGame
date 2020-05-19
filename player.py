@@ -138,7 +138,7 @@ class Player(object):
 
     def juhe(self):
         '''举贺'''
-        print(self.name, '因', self.location, '举贺')
+        print(self.name, '在', self.location, '举贺')
         self.juhe_count += 1
 
     def fa(self):
