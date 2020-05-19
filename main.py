@@ -34,9 +34,7 @@ def exist_winner(*players):
 def main():
     dices = Dices()
     game_map = GameMap()
-    # NO! 同时赋值会触发 类的继承 中的隐藏bug! 应该分别赋值
-    # baoyu, baochai, daiyu = BaoYu(), BaoChai(), DaiYu()
-    # fengjie, miaoyu, xiangling = FengJie(), MiaoYu(), XiangLing()
+    
     baoyu = BaoYu()
     baochai = BaoChai()
     daiyu = DaiYu()

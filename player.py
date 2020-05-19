@@ -23,33 +23,33 @@ class Player(object):
     dice_kind = None
     dices = (0, 0, 0)
 
-    stop_places: list
-    goback_places: list
-    qingan_places: list
-    wenhao_places: list
-    shouhe_places: list
-    juhe_places: list
-    fa_places: dict
-    nianxiang_places: list
-    losemoney_places: list
-    calldice_places: dict
+    # stop_places: list
+    # goback_places: list
+    # qingan_places: list
+    # wenhao_places: list
+    # shouhe_places: list
+    # juhe_places: list
+    # fa_places: dict
+    # nianxiang_places: list
+    # losemoney_places: list
+    # calldice_places: dict
 
     def __init__(self, name):
         self.name = name
         self.location = '荣国府'
-        self.stop_places = place_common_effect.stop_places
-        self.goback_places = place_common_effect.goback_places
-        self.qingan_places = place_common_effect.qingan_places
-        self.wenhao_places = place_common_effect.wenhao_places
+        self.stop_places = place_common_effect.stop_places.copy()
+        self.goback_places = place_common_effect.goback_places.copy()
+        self.qingan_places = place_common_effect.qingan_places.copy()
+        self.wenhao_places = place_common_effect.wenhao_places.copy()
         self.shouhe_places = list()
-        self.juhe_places   = place_common_effect.juhe_places
+        self.juhe_places   = place_common_effect.juhe_places.copy()
         self.fa_places     = dict()
-        self.nianxiang_places = place_common_effect.nianxiang_places
-        self.losemoney_places = place_common_effect.losemoney_places
-        self.calldice_places  = place_common_effect.calldice_places
+        self.nianxiang_places = place_common_effect.nianxiang_places.copy()
+        self.losemoney_places = place_common_effect.losemoney_places.copy()
+        self.calldice_places  = place_common_effect.calldice_places.copy()
 
     def show_status(self):
-        summary = self.name + ' 的总结:\n'
+        summary = self.name + ' 的状态:\n'
         summary += self.name + '正在 ' + self.location + '\n'
         if self.is_stop:
             summary += '即将停一轮\n'
@@ -60,6 +60,20 @@ class Player(object):
         summary += '被罚了 ' + str(self.fa_count) + ' 次\n'
         summary += '拈香了 ' + str(self.nianxiang_count) + ' 次\n'
         summary += '捐资了 ' + str(self.losemoney_count) + ' 次\n'
+        print(summary)
+
+    def show_features(self):
+        summary = self.name + ' 的特点:\n'
+        summary += self.name + '停一轮 的地点有 ' + ', '.join(self.stop_places) + '\n'
+        summary += self.name + '回本位 的地点有 ' + ', '.join(self.goback_places) + '\n'
+        summary += self.name + '请安 的地点有 ' + ', '.join(self.qingan_places) + '\n'
+        summary += self.name + '问好 的地点有 ' + ', '.join(self.wenhao_places) + '\n'
+        summary += self.name + '受贺 的地点有 ' + ', '.join(self.shouhe_places) + '\n'
+        summary += self.name + '举贺 的地点有 ' + ', '.join(self.juhe_places) + '\n'
+        summary += self.name + '受罚 的地点有 ' + ', '.join(self.fa_places) + '\n'
+        summary += self.name + '拈香 的地点有 ' + ', '.join(self.nianxiang_places) + '\n'
+        summary += self.name + '捐资 的地点有 ' + ', '.join(self.losemoney_places) + '\n'
+        summary += self.name + '掷骰 的地点有 ' + ', '.join(self.calldice_places) + '\n'
         print(summary)
 
     def go(self, dices: Dices, game_map: GameMap):
@@ -192,6 +206,8 @@ class BaoYu(Player):
 
     def __init__(self):
         super().__init__('宝玉')
+        # print('after super().__init__()')
+        # self.show_features()
         self.stop_places += self._stop_places
         self.goback_places = [p for p in self.goback_places + self._goback_places
                                 if p not in self._not_goback_places]
@@ -199,6 +215,8 @@ class BaoYu(Player):
         self.shouhe_places += self._shouhe_places
         self.fa_places.update(self._fa_places)
         self.calldice_places.update(self._calldice_places)
+        # print('after changes')
+        # self.show_features()
 
     def place_interact(self):
         super().place_interact()
@@ -212,10 +230,14 @@ class BaoChai(Player):
     
     def __init__(self):
         super().__init__('宝钗')
+        # print('after super().__init__()')
+        # self.show_features()
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
         self.fa_places.update(self._fa_places)
         self.calldice_places.update(self._calldice_places)
+        # print('after changes')
+        # self.show_features()
     
     def place_interact(self):
         super().place_interact()
@@ -229,10 +251,14 @@ class DaiYu(Player):
     
     def __init__(self):
         super().__init__('黛玉')
+        # print('after super().__init__()')
+        # self.show_features()
         self.stop_places += self._stop_places
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
         self.calldice_places.update(self._calldice_places)
+        # print('after changes')
+        # self.show_features()
     
     def place_interact(self):
         super().place_interact()
@@ -248,11 +274,15 @@ class FengJie(Player):
 
     def __init__(self):
         super().__init__('凤姐')
+        # print('after super().__init__()')
+        # self.show_features()
         self.stop_places += self._stop_places
         self.wenhao_places = [p for p in self.wenhao_places if p not in self._not_wenhao_places]
         self.shouhe_places += self._shouhe_places
         self.fa_places.update(self._fa_places)
         self.calldice_places.update(self._calldice_places)
+        # print('after changes')
+        # self.show_features()
 
     def place_interact(self):
         super().place_interact()
@@ -270,6 +300,8 @@ class MiaoYu(Player):
     
     def __init__(self):
         super().__init__('妙玉')
+        # print('after super().__init__()')
+        # self.show_features()
         self.stop_places = [p for p in self.stop_places + self._stop_places
                             if p not in self._not_stop_places]
         self.qingan_places = [p for p in self.qingan_places if p not in self._not_qingan_places]
@@ -278,6 +310,8 @@ class MiaoYu(Player):
         self.fa_places.update(self._fa_places)
         self.losemoney_places = [p for p in self.losemoney_places if p not in self._not_losemoney_places]
         self.calldice_places.update(self._calldice_places)
+        # print('after changes')
+        # self.show_features()
     
     def place_interact(self):
         super().place_interact()
@@ -295,6 +329,8 @@ class XiangLing(Player):
     
     def __init__(self):
         super().__init__('香菱')
+        # print('after super().__init__()')
+        # self.show_features()
         self.stop_places = [p for p in self.stop_places + self._stop_places
                             if p not in self._not_stop_places]
         self.goback_places = [p for p in self.goback_places if p not in self._not_goback_places]
@@ -303,6 +339,8 @@ class XiangLing(Player):
         self.shouhe_places += self._shouhe_places
         self.fa_places.update(self._fa_places)
         self.calldice_places.update(self._calldice_places)
+        # print('after changes')
+        # self.show_features()
     
     def place_interact(self):
         super().place_interact()
