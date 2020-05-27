@@ -201,7 +201,7 @@ class BaoYu(Player):
     _not_goback_places = ['贾氏家塾', '松鹤童子', '冯渊']
     _not_wenhao_places = ['贾环']
     _shouhe_places = ['女仙', '怡红院']
-    _fa_places = {'金钏': 3, '赵姨娘': 3, '贾环': 1, '彩云': 1, '秦可卿': 2}
+    _fa_places = {'金钏': 3, '赵姨娘': 3, '贾环': 1, '彩云': 1, '秦可卿': 2, '尤三姐': 1}
     _calldice_places = {'怡红院': 1}
 
     def __init__(self):
@@ -247,7 +247,7 @@ class DaiYu(Player):
     _stop_places = ['贾夫人']
     _not_wenhao_places = ['宝蟾', '紫鹃', '雪雁']
     _shouhe_places = ['林如海', '潇湘馆']
-    _calldice_places = {'林如海': None, '潇湘馆': 3}
+    _calldice_places = {'傻大姐': None, '林如海': None, '潇湘馆': 3}
     
     def __init__(self):
         super().__init__('黛玉')
@@ -268,8 +268,8 @@ class FengJie(Player):
     _stop_places = ['鸳鸯', '巧姐', '秦可卿']
     _wenhao_places = ['內监']
     _not_wenhao_places = ['贾环', '鸳鸯', '平姑娘', '尤二姐', '巧姐', '小红']
-    _shouhe_places = ['巧姐', '']
-    _fa_places = {'赵姨娘': 3, '贾环': 1, '贾琏': 1, '尤二姐': 3, '鲍二家': 2, '醋缸': 2}
+    _shouhe_places = ['贾琏', '巧姐']
+    _fa_places = {'赵姨娘': 3, '贾环': 1, '尤二姐': 3, '鲍二家': 2, '醋缸': 2}
     _calldice_places = {'贾琏': 4, '醋缸': None}
 
     def __init__(self):
